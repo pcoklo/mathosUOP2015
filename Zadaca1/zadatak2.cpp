@@ -34,6 +34,8 @@ int main(){
 	ispis(A,m,n);			//i ispišemo
 	A = (float*) transpose(A,m,n);	//"A = transponirano(A)" ovaj (float*) nađite sami
 	ispis(A,m,n);			//ispis transponirano A
+	
+	delete [] A;
 
 	return 0;
 }
