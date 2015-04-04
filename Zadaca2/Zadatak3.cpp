@@ -2,6 +2,8 @@
 #include <cmath>
 using namespace std;
 
+float PI = 3.14159265;
+
 class Tocka
 {
 public:
@@ -33,8 +35,9 @@ public:
 	Tocka *vrhovi;
 
 	PravilniPoligon();
-	PravilniPoligon(const Tocka& S, const Tocka& T, int n);
+	PravilniPoligon(const Tocka& S, const Tocka& T1, int n);
 	PravilniPoligon(const PravilniPoligon& P);
+	~PravilniPoligon();
 
 	float opseg() const;
 	float povrsina() const;
@@ -67,11 +70,40 @@ float Pravokutnik::povrsina() const{
 	return a*b;
 }
 
+PravilniPoligon::PravilniPoligon(){
+	n=3;
+	S.x=0; S.y=0;
+	T1.x=1; T1.y=1;
+
+	vrhovi = new Tocka [n];
+}
+
+PravilniPoligon::PravilniPoligon(const Tocka& S, const Tocka& T1, int n){
+	this->n = n;
+
+	this->S.x = S.x; this->S.y = S.y;
+	this->T1.x = T1.x; this->T1.y = T1.y;
+
+	vrhovi = new Tocka [n];
+}
+
+PravilniPoligon::~PravilniPoligon(){
+	delete [] vrhovi;
+}
+
+float PravilniPoligon::opseg() const{
+	return n*(sqrt((S.x-T1.x)*(S.x-T1.x)+(S.y-T1.y)*(S.y-T1.y))*(2*sin(2*PI/(2*n))));
+}
+
+float PravilniPoligon::povrsina() const{
+	return n/2*((S.x-T1.x)*(S.x-T1.x)+(S.y-T1.y)*(S.y-T1.y))*(sin(2*PI/n));
+}
+
 int main()
 {
 	Pravokutnik P(Tocka(1,3), Tocka(2,5));
 	cout << "***P: opseg:" << P.opseg() << ", povrsina: " << P.povrsina() << endl;
-//	PravilniPoligon P_5(Tocka(1,5), Tocka(3,6), 5);
-//	cout << "***P_5: opseg:" << P_5.opseg() << ", povrsina: " << P_5.povrsina() << endl;
+	PravilniPoligon P_5(Tocka(0,0), Tocka(1,1), 4);
+	cout << "***P_5: opseg:" << P_5.opseg() << ", povrsina: " << P_5.povrsina() << endl;
 
 }
