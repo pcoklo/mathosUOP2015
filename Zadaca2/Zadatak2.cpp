@@ -3,8 +3,8 @@ using namespace std;
 
 class vector{
 protected:
-	size_t s;
-	size_t c;
+	size_t s;	// s kao size
+	size_t c;	// c kao capacity
 
 	float *vektor;
 
