@@ -19,3 +19,7 @@ public:
 	void resize_to_fit();
 	void clear();
 };
+
+void main(){
+	
+}
