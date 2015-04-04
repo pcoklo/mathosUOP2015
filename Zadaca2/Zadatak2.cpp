@@ -31,28 +31,59 @@ public:
 
 	~vector(){ delete[] vektor; };
 
-	size_t size() const{}; //size_t = unsigned int
-	size_t capacity() const{};
+	size_t size() const {return s;};
+	size_t capacity() const {return c;};
 
 	void push_back(float x){
+		if(s==c){
+			float *temp = new float [c];
+			for(int i=0; i<s; i++)
+				temp[i] = vektor[i];
+			c=c*2;
+			vektor = new float [c];
+			for(int i=0; i<s; i++)
+				vektor[i] = temp[i];
+			delete [] temp;
+		}
+
 		vektor[s]=x;
 		s++;	
 	};
 
 	float pop_back(){
-		s--;	
-		return vektor[s];	
+		if(s==0) return 0;
+		s--;
+		float tmp = vektor[s];
+		if(s==c/2){
+			float *temp = new float [c];
+			for(int i=0; i<s; i++)
+				temp[i] = vektor[i];
+			c=c/2;
+			vektor = new float [c];
+			for(int i=0; i<s; i++)
+				vektor[i] = temp[i];
+			delete [] temp;
+		}
+		return tmp;	
 	};
 
-	void resize_to_fit(){};
-	void clear(){};
+	void resize_to_fit(){
+		c=s;
+		float *temp = new float [c];
+		for(int i=0; i<s; i++)
+			temp[i] = vektor[i];
+		vektor = new float [c];
+		for(int i=0; i<s; i++)
+			vektor[i] = temp[i];
+		delete [] temp;
+	};
+	void clear(){
+		s=0;
+		vektor = new float [c];
+	};
 };
 
 int main(){
-	vector S1;
-	S1.push_back(21);
-	S1.push_back(11);
-	cout << S1.pop_back() << endl;
-	cout << S1.pop_back() << endl;
-	return 0;
+
+/**/	return 0;
 }
