@@ -6,8 +6,8 @@ class vector
 protected:
 	size_t s;
 	size_t c;
-
 	float *vektor;
+
 public:
 	vector(){};
 	vector(size_t size);
@@ -20,6 +20,7 @@ public:
 	void clear();
 };
 
-void main(){
-	
+int main(){
+
+	return 1;
 }
