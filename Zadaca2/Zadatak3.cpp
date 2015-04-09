@@ -56,15 +56,14 @@ Pravokutnik::Pravokutnik(const Tocka& T1, const Tocka& T2){
 Pravokutnik::Pravokutnik(const Pravokutnik& P){
 	this->T1.x=P.T1.x; this->T1.y=P.T1.y;
 	this->T2.x=P.T2.x; this->T2.y=P.T2.y;
-}
 
-float Pravokutnik::opseg() const{
+float Pravokutnik::opseg() const{	// računa opseg
 	float a = abs(T1.x-T2.x);
 	float b = abs(T1.y-T2.y);
 	return 2*a + 2*b;
 }
 
-float Pravokutnik::povrsina() const{
+float Pravokutnik::povrsina() const{	// računa površinu
 	float a = abs(T1.x-T2.x);
 	float b = abs(T1.y-T2.y);
 	return a*b;
