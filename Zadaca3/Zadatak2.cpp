@@ -62,9 +62,9 @@ node::node(int val, node* prev, node* next){
 }
 
 node::node(const node & N){
-	this->value = N.value;
-	this->_prev = N._prev;
-	this->_next = N._next;
+	this -> value = N.value;
+	this -> _prev = N._prev;
+	this -> _next = N._next;
 }
 
 list::list(){
@@ -149,17 +149,31 @@ void list::insert(node* prev, node &x){
 	
 }
 void list::erase(node &x){}
-void list::clear(){}
+void list::clear(){
+	if(_head)
+		while(_head)
+			pop_front();
+}
 
 void list::sort(){
-	if(_head){
-		node *tmp = _head;
-		while(tmp){
-			cout << tmp -> value << "\t";
-			tmp = tmp -> _next; 
+	node *tmp, *temp = new node();
+	if(_head == NULL || _head -> _next == NULL) return;
+
+	bool swap = 1;
+	while (swap){
+		swap = 0;
+
+		tmp = _head;
+		while (tmp -> _next != NULL){
+			if (tmp -> value > tmp -> _next -> value){
+				swap = 1;
+				temp -> value = tmp -> value;
+				tmp -> value = tmp -> _next -> value;
+				tmp -> _next -> value = temp -> value;
+			}
+			tmp = tmp -> _next;
 		}
 	}
-	cout << endl;
 }
 void list::reverse(){
 	if( _head==NULL || _head -> _next == NULL) return;
@@ -197,11 +211,12 @@ int main()
 
 //	L.remove(L.front()->next()->next());
 	L.print();
-//	L.sort();
+	L.sort();
 //	L.print();
-	L.reverse();
+
 	L.print();
 //	L.clear();
+//	L.print();
 
 	return 0;
 }
