@@ -34,9 +34,9 @@ public:
 	node* back(); // vraća pokazivač na zadnji element liste
 	void print(); // ispis elemenata liste
 	// modifikatori liste
-	void push_front(node &x); // dodajte element na početak liste
+	void push_front(const node &x); // dodajte element na početak liste
 	node* pop_front(); // vraća i briše element s početka liste
-	void push_back(node &x); // na kraj liste stavlja element x
+	void push_back(const node &x); // na kraj liste stavlja element x
 	node* pop_back(); // s kraja liste briše i vraća element 
 
 	void insert(node* prev, node &x); // ubacuje novi čvor x iza čvora prev
@@ -80,7 +80,6 @@ list::~list(){
 
 node* list::front(){return _head;}
 node* list::back(){return _tail;}
-
 void list::print(){
 	if(_head){
 		node *tmp = _head;
@@ -92,7 +91,7 @@ void list::print(){
 	cout << endl;
 }
 
-void list::push_front(node &x){
+void list::push_front(const node &x){
 	node * newNode = new node();
 	newNode -> value = x.value;
 	newNode -> _next = _head;
@@ -104,20 +103,22 @@ void list::push_front(node &x){
 		_tail = newNode;
 	}
 	_head = newNode;
-	_head -> _prev = NULL;
 }
-
 node* list::pop_front(){
 	if(_head -> _next){
+		node * tmp = _head;
 		_head = _head -> _next;
 		_head -> _prev = NULL;
+		delete tmp;
 	}
 	else if(_head){
+		node * tmp = _head;
 		_head = NULL;
+		delete tmp;
 	}
 }
 
-void list::push_back(node &x){
+void list::push_back(const node &x){
 	node * newNode = new node();
 	newNode -> value = x.value;
 	newNode -> _prev = _tail;
@@ -129,48 +130,78 @@ void list::push_back(node &x){
 		_head = newNode;
 	}
 	_tail = newNode;
-	_tail -> _next = NULL;
 }
-
 node* list::pop_back(){
 	if(_tail -> _prev){
+		node * tmp = _tail;
 		_tail = _tail -> _prev;
 		_tail -> _next = NULL;
+		delete tmp;
 	}
 	else if(_tail){
+		node * tmp = _tail;
 		_tail = NULL;
+		delete tmp;
 	}
 }
 
-void list::insert(node* prev, node &x){}
+void list::insert(node* prev, node &x){
+	
+}
 void list::erase(node &x){}
 void list::clear(){}
 
-void list::sort(){}
-void list::reverse(){}
+void list::sort(){
+	if(_head){
+		node *tmp = _head;
+		while(tmp){
+			cout << tmp -> value << "\t";
+			tmp = tmp -> _next; 
+		}
+	}
+	cout << endl;
+}
+void list::reverse(){
+	if( _head==NULL || _head -> _next == NULL) return;
+	node *parent = _head;
+	node *me = _head -> _next;
+	node *child = me -> _next;
+
+	_head -> _next = NULL;
+	me -> _next = _head;
+
+	while( child != NULL){
+		me -> _next = parent;
+		parent = me;
+		me = child;
+		child = child -> _next;
+	}
+
+	_head = me;
+	_head -> _next = parent;
+}
 
 
 int main()
 {
 	list L;
-	for(int i=0;i<2;i++)
+	for(int i=0;i<10;i++)
 	{
-		node x(i,NULL,NULL);
-		node y(i,NULL,NULL);
+		int val = rand()%10;
+		node x(rand()%10,NULL,NULL);
+		node y(rand()%10,NULL,NULL);
 
 		L.push_back(x);
 		L.push_front(y);
 	}
 
 //	L.remove(L.front()->next()->next());
-	cout << "Pocetak: " << L.front() -> value << endl;
-	cout << "Kraj: " << L.back() -> value << endl;
 	L.print();
 //	L.sort();
 //	L.print();
-//	L.reverse();
-//	L.print();
+	L.reverse();
+	L.print();
 //	L.clear();
 
-	return 1;
+	return 0;
 }
