@@ -80,6 +80,7 @@ list::~list(){
 
 node* list::front(){return _head;}
 node* list::back(){return _tail;}
+
 void list::print(){
 	if(_head){
 		node *tmp = _head;
@@ -103,7 +104,9 @@ void list::push_front(node &x){
 		_tail = newNode;
 	}
 	_head = newNode;
+	_head -> _prev = NULL;
 }
+
 node* list::pop_front(){
 	if(_head -> _next){
 		_head = _head -> _next;
@@ -126,7 +129,9 @@ void list::push_back(node &x){
 		_head = newNode;
 	}
 	_tail = newNode;
+	_tail -> _next = NULL;
 }
+
 node* list::pop_back(){
 	if(_tail -> _prev){
 		_tail = _tail -> _prev;
@@ -148,20 +153,18 @@ void list::reverse(){}
 int main()
 {
 	list L;
-	for(int i=0;i<10;i++)
+	for(int i=0;i<2;i++)
 	{
-		int val = rand()%10;
-		node x(rand()%10,NULL,NULL);
-		node y(rand()%10,NULL,NULL);
+		node x(i,NULL,NULL);
+		node y(i,NULL,NULL);
 
 		L.push_back(x);
 		L.push_front(y);
 	}
 
 //	L.remove(L.front()->next()->next());
-	L.print();
-	L.pop_back();
-	L.pop_front();
+	cout << "Pocetak: " << L.front() -> value << endl;
+	cout << "Kraj: " << L.back() -> value << endl;
 	L.print();
 //	L.sort();
 //	L.print();
