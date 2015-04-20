@@ -34,12 +34,12 @@ public:
 	node* back(); // vraća pokazivač na zadnji element liste
 	void print(); // ispis elemenata liste
 	// modifikatori liste
-	void push_front(const node &x); // dodajte element na početak liste
+	void push_front(node* x); // dodajte element na početak liste
 	node* pop_front(); // vraća i briše element s početka liste
-	void push_back(const node &x); // na kraj liste stavlja element x
+	void push_back(node* x); // na kraj liste stavlja element x
 	node* pop_back(); // s kraja liste briše i vraća element 
 
-	void insert(node* prev, node &x); // ubacuje novi čvor x iza čvora prev
+	void insert(node* prev, node* x); // ubacuje novi čvor x iza čvora prev
 	void erase(node* x); // brišu se čvor x iz liste
 	void clear(); // metoda briše elemente liste
 	// operacije
@@ -61,7 +61,7 @@ node::node(int val, node* prev, node* next){
 	_next = next;
 }
 
-node::node(const node & N){
+node::node(const node &N){
 	this -> value = N.value;
 	this -> _prev = N._prev;
 	this -> _next = N._next;
@@ -93,9 +93,9 @@ void list::print(){
 	cout << endl;
 }
 
-void list::push_front(const node &x){
+void list::push_front(node* x){
 	node * newNode = new node();
-	newNode -> value = x.value;
+	newNode -> value = x -> value;
 	newNode -> _next = _head;
 
 	if(_head != NULL){
@@ -121,9 +121,9 @@ node* list::pop_front(){
 	}
 }
 
-void list::push_back(const node &x){
+void list::push_back(node* x){
 	node * newNode = new node();
-	newNode -> value = x.value;
+	newNode -> value = x -> value;
 	newNode -> _prev = _tail;
 
 	if(_tail != NULL){
@@ -149,14 +149,23 @@ node* list::pop_back(){
 	}
 }
 
-void list::insert(node* prev, node &x){
-	//ovo mi fali
+void list::insert(node* prev, node* x){
+	x -> _prev = prev;
+	x -> _next = prev -> _next;
+
+	if(prev -> _next == NULL) _tail = x;
+	else prev -> _next -> _prev = x;
+
+	prev -> _next = x;
 }
 
 void list::erase(node* x){
-	if(x -> _prev == NULL) pop_front();
-	else if(x -> _next == NULL) pop_back();
-	//i ovo
+	if(x -> _prev == NULL) _head = x -> _next;
+	else x -> _prev -> _next = x -> _next;
+	if(x -> _next == NULL) _tail = x -> _prev;
+	else x -> _next -> _prev = x -> _prev;
+
+	delete x;
 }
 
 void list::clear(){
@@ -212,14 +221,19 @@ int main()
 	for(int i=0;i<10;i++)
 	{
 		int val = rand()%10;
-		node x(rand()%10,NULL,NULL);
-		node y(rand()%10,NULL,NULL);
+		node *x = new node(rand()%10,NULL,NULL);
+		node *y = new node(rand()%10,NULL,NULL);
 
 		L.push_back(x);
 		L.push_front(y);
 	}
 
-//	L.erase(L.front()->next()->next());
+	node *cvor = new node(11, NULL, NULL);
+
+	L.print();
+	L.erase(L.front()->next()->next());
+	L.print();
+	L.insert(L.front()->next()->next(), cvor);
 	L.print();
 	L.sort();
 	L.print();
