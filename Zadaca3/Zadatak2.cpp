@@ -40,7 +40,7 @@ public:
 	node* pop_back(); // s kraja liste briše i vraća element 
 
 	void insert(node* prev, node &x); // ubacuje novi čvor x iza čvora prev
-	void erase(node &x); // brišu se čvor x iz liste
+	void erase(node* x); // brišu se čvor x iz liste
 	void clear(); // metoda briše elemente liste
 	// operacije
 	void sort(); // sortira elemente liste po vrijednosti node.value
@@ -79,7 +79,9 @@ list::~list(){
 }
 
 node* list::front(){return _head;}
+
 node* list::back(){return _tail;}
+
 void list::print(){
 	if(_head){
 		node *tmp = _head;
@@ -104,6 +106,7 @@ void list::push_front(const node &x){
 	}
 	_head = newNode;
 }
+
 node* list::pop_front(){
 	if(_head -> _next){
 		node * tmp = _head;
@@ -131,6 +134,7 @@ void list::push_back(const node &x){
 	}
 	_tail = newNode;
 }
+
 node* list::pop_back(){
 	if(_tail -> _prev){
 		node * tmp = _tail;
@@ -146,9 +150,15 @@ node* list::pop_back(){
 }
 
 void list::insert(node* prev, node &x){
-	
+	//ovo mi fali
 }
-void list::erase(node &x){}
+
+void list::erase(node* x){
+	if(x -> _prev == NULL) pop_front();
+	else if(x -> _next == NULL) pop_back();
+	//i ovo
+}
+
 void list::clear(){
 	if(_head)
 		while(_head)
@@ -209,14 +219,14 @@ int main()
 		L.push_front(y);
 	}
 
-//	L.remove(L.front()->next()->next());
+	L.print();
+	L.erase(L.front()->next()->next());
 	L.print();
 	L.sort();
-//	L.print();
-
 	L.print();
-//	L.clear();
-//	L.print();
+	L.reverse();
+	L.print();
+	L.clear();
 
 	return 0;
 }
