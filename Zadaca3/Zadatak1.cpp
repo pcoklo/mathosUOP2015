@@ -22,13 +22,18 @@ public:
 
 int main()
 {
-	Cvor* x = new Cvor(1,NULL,y);
+	Cvor* x = new Cvor(1,NULL,NULL);
 	Cvor* y = new Cvor(3,x,NULL);
 	Cvor* z = new Cvor(5,NULL,x);
 
-	while(x=x->next){
+	x -> prev = NULL; x -> next = y;
+	y -> prev = x; y -> next = z;
+	z -> prev = y; z -> next = NULL;
+
+	do{
 		cout << "<-" << x->n << "->"; 
 	}
+	while(x=x->next);
 
 	return 0;
 }
