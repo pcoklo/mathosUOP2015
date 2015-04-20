@@ -22,7 +22,7 @@ public:
 
 int main()
 {
-	Cvor* x = new Cvor(1,NULL,NULL);
+	Cvor* x = new Cvor(1,NULL,y);
 	Cvor* y = new Cvor(3,x,NULL);
 	Cvor* z = new Cvor(5,NULL,x);
 
