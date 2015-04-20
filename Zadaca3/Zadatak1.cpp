@@ -8,7 +8,11 @@ public:
 	Cvor *prev;
 
 public:
-	Cvor(){}
+	Cvor(){
+		n = 0;
+		next = NULL;
+		prev = NULL;
+	}
 	Cvor(int x, Cvor* prev, Cvor* next){
 		n = x;
 		this->next = next;
@@ -18,11 +22,13 @@ public:
 
 int main()
 {
-	Cvor x(1,NULL,NULL);
-	Cvor y(3,x,NULL);
-	Cvor z(5,NULL,x);
-	while(x=x->next)
-	{
-		cout << "<-" << x.n "->"; 
+	Cvor* x = new Cvor(1,NULL,NULL);
+	Cvor* y = new Cvor(3,x,NULL);
+	Cvor* z = new Cvor(5,NULL,x);
+
+	while(x=x->next){
+		cout << "<-" << x->n << "->"; 
 	}
+
+	return 0;
 }
