@@ -219,8 +219,7 @@ int main()
 		L.push_front(y);
 	}
 
-	L.print();
-	L.erase(L.front()->next()->next());
+//	L.erase(L.front()->next()->next());
 	L.print();
 	L.sort();
 	L.print();
