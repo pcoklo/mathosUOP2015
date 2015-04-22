@@ -15,8 +15,10 @@ public:
 	}
 	Cvor(int x, Cvor* prev, Cvor* next){
 		n = x;
-		this->next = next;
-		this->prev = prev;
+		this -> next = next;
+		this -> prev = prev;
+// this je pointer na element iz klase koji se nalazi u redu 7 i 8
+// a ovaj bnez thisa je onaj iz funkcije(int x, Cvor* prev, Cvor* next)
 	}
 };
 
