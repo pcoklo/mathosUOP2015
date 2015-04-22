@@ -1,204 +1,218 @@
 #include <iostream>
 #include <cstdlib>
+
 using namespace std;
 
-class node
-{
+class Node{
 public:
-	int value;		//podatak / key / data /woteva
-	node* _prev;	//pokazivač na prethodni čvor
-	node* _next;	//pokazivać na sljedeći čvor
+	int value;
+	Node* _prev;
+	Node* _next;
 
-	node();
-	node(int val, node* prev, node* next);
-	node(const node & N);
-
-	// pristupi elementima / metode
-	int key() const {return value;}
-	node* prev() {return _prev; }
-	node* next() {return _next; }
+	Node();
+	Node(int value, Node* prev, Node* next);// pristupi elementima
+	
+	int key() const { return value;}
+	Node* prev() { return _prev; }
+	Node* next() { return _next; }
 };
 
-class list	//papira(ne)
-{
-protected:
-	node* _head;
-	node* _tail;
+class List{
 public:
+	Node * _head;
+	Node * _tail;
 // konstruktori
-	list();
-	list(const list & L);
-	~list();
-	// pristup elementima 
-	node* front(); // vraća pokazivač na prvi element liste
-	node* back(); // vraća pokazivač na zadnji element liste
-	void print(); // ispis elemenata liste
-	// modifikatori liste
-	void push_front(node* x); // dodajte element na početak liste
-	node* pop_front(); // vraća i briše element s početka liste
-	void push_back(node* x); // na kraj liste stavlja element x
-	node* pop_back(); // s kraja liste briše i vraća element 
+	List();
 
-	void insert(node* prev, node* x); // ubacuje novi čvor x iza čvora prev
-	void erase(node* x); // brišu se čvor x iz liste
-	void clear(); // metoda briše elemente liste
+	// pristup elementima
+	Node* head(){ return _head; };// vraća pokazivač na prvi element Liste
+	Node* tail(){ return _tail; };// vraća pokazivač na zadnji element Liste
+	void print();// ispis elemenata Liste
+	
+	// modifikatori Liste
+	void push_front(Node *node); // dodajte element na početak Liste
+	Node* pop_front();// vraća i briše element s početka Liste
+	void push_back(Node *node); // na kraj Liste stavlja element node
+	Node* pop_back();// s kraja Liste briše i vraća element
+	void insert(Node* node, Node* newNode);// ubacuje novi čvor node iza čvora node
+	void erase(Node* node);// brišu se čvor node iz Liste
+
+	void clear();// metoda briše elemente Liste
+
 	// operacije
-	void sort(); // sortira elemente liste po vrijednosti node.value
-	void reverse(); // obrni redoslijed elemenata u listi
-	// ostali detalji implementacije su proizvoljni 
+	void sort();// sortira elemente Liste po vrijednosti Node.value
+	void reverse();// obrni redoslijed elemenata u Listi
+	// ostali detalji implementacije su proizvoljni
 	// ...
 };
 
-node::node(){
+//defaultni/trivialni konstrukor čvorova, meće sve vrijednosti u null
+Node::Node(){
 	value = 0;
 	_next = NULL;
 	_prev = NULL;
 }
 
-node::node(int val, node* prev, node* next){
-	value = val;
-	_prev = prev;
-	_next = next;
+//'onaj drugi' konstruktor čvorova, radi to što konstruktori rade
+Node::Node(int value, Node* _prev, Node* _next){
+	this -> value = value;
+	this -> _prev = _prev;
+	this -> _next = _next;
 }
 
-node::node(const node &N){
-	this -> value = N.value;
-	this -> _prev = N._prev;
-	this -> _next = N._next;
-}
-
-list::list(){
+//defaultni konstrukto liste, meće vrijednost head i tail u null, jer.
+List::List(){
 	_head = NULL;
 	_tail = NULL;
 }
 
-list::~list(){
-	if(_head)
-		while(_head)
-			pop_front();
+//print funkcija liste printa listu
+void  List::print(){
+	Node * temp = _head;		//stvorimo čvor temp i damo mu vrijednost prvog čvora
+	while(temp){				//sve dok čvor ima nekaku vrijednost 
+		cout << "<-" << temp -> value << "->";	//piši listu kao u prvom zadatku
+        temp = temp -> _next;	//vrijednost temp dobije vrijednost sljedećeg
+        //kad dođe do kraja temp dobije vrijednost NULL, while se prekida
+	}
+	cout << endl;	//ispiši novi red poslje liste, da bude fino lijepo i uredno
 }
 
-node* list::front(){return _head;}
+void List::push_front(Node *node){	//push front metoda stavlja čvor na prvo mjesto
+	Node * newNode = new Node();	//stvaramo novi čvor imena newNode i dinamiči alociramo njegovu memoriju nadedbom new, Node() je defaultni konstruktor klase Node
+	newNode -> value = node -> value;	//vrijednost value prosljeđenog čvora 'node' kopiramo u vrijednos novog čvora
 
-node* list::back(){return _tail;}
+	//kako stavljamo novi čvor na početak liste, taj čvor će biti prvi
+	newNode -> _next = _head;	//stoga njegov sljedbenik je trenutni prvi odnosno _head
 
-void list::print(){
-	if(_head){
-		node *tmp = _head;
-		while(tmp){
-			cout << tmp -> value << "\t";
-			tmp = tmp -> _next; 
-		}
-	}
-	cout << endl;
+	//ako stavljamo čvor u listu koja nije prazna, tj. postoji li već čvor koji je _head
+	if( _head  ) _head -> _prev = newNode;	//tog čvora _head prethodnik je newNode jer je newNode sada prvi
+	else _tail = newNode;	//stavljamo li pak newNode u praznu listu, newNode je u tom slučaju prvi i zadnji čvor liste 
+	//stoga _tail je i newNode
+	
+	_head = newNode;	//i naravno prvi čvor postaje noviČvor
 }
 
-void list::push_front(node* x){
-	node * newNode = new node();
-	newNode -> value = x -> value;
-	newNode -> _next = _head;
+void List::push_back(Node *node){	//push back metoda stavlja čvor na zadnje mjesto
+	Node * newNode = new Node();	//stvaramo novi čvor imena newNode i dinamiči alociramo njegovu memoriju nadedbom new, Node() je defaultni konstruktor klase Node
+	newNode -> value = node -> value;	//vrijednost value prosljeđenog čvora 'node' kopiramo u vrijednos novog čvora
 
-	if(_head != NULL){
-		_head -> _prev = newNode;
-	}
-	else{
-		_tail = newNode;
-	}
-	_head = newNode;
+	//kako stavljamo novi čvor na kraj liste, taj čvor će biti zadnji
+	newNode -> _prev = _tail;	//stoga njegov prethodnik je trenutni zadnji odnosno _tail
+
+	//ako stavljamo čvor u listu koja nije prazna, tj. postoji li već čvor koji je _tail
+	if( _tail  ) _tail -> _next = newNode;	//tog čvora _tail sljedbenik je newNode jer je newNode sada zadnji
+	else _head = newNode;	//stavljamo li pak newNode u praznu listu, newNode je u tom slučaju prvi i zadnji čvor liste 
+	//stoga _head je i newNode
+	
+	_tail = newNode;	//i naravno zadnji čvor postaje noviČvor
 }
 
-node* list::pop_front(){
+Node* List::pop_front(){		//pop front metoda skida prvi čvor s liste i radi return njegove vrijednosti
+	if( _head -> _next ){		//ako postoji više od jednog čvora u listi
+		Node *temp = _head;		//stvorimo novi čvor i dodjelimo mu vrijednost prvog čvora
+	
+		_head = _head -> _next;	//sljedeći čvor poslje prvoga sada postalje prvi
+		_head -> _prev = NULL;	//čvor koji je do sada bio prvi sada je prethodnik prvom, i njega brišemo
+		
+		return temp;			//vraćamo vrijednost nekadašnjeg prvog
+	}
+
+	else if ( _head ){			//ako postoji samo jedan čvor u listi
+		Node *temp = _head;		//stvorimo novi čvor i dodjelimo mu vrijednost prvog čvora
+	
+		_head = NULL;			//vrijednost prvog elementa stavimo u null
+		
+		return temp;			//vratimo vrijednost nekadašnjeg elementa
+	}
+
+//	else						//ako nema čvorova neradimo ništa
+}
+
+Node* List::pop_back(){			//pop back metoda skida zadnj čvor s liste i radi return njegove vrijednosti
+	if( _tail -> _prev ){		//ako postoji više od jednog čvora u listi
+		Node *temp = _tail;		//stvorimo novi čvor i dodjelimo mu vrijednost zadnjeg čvora
+	
+		_tail = _tail -> _prev;	//prethodni čvor poslje zadnjeg sada postalje zadnji
+		_tail -> _next = NULL;	//čvor koji je do sada bio zadnji sada je sljedeći zadnjem, i njega brišemo
+	
+		return temp;			//vraćamo vrijednost nekadašnjeg zadnjeg
+	}
+
+	else if ( _tail ){			//ako postoji samo jedan čvor u listi
+		Node *temp = _tail;		//stvorimo novi čvor i dodjelimo mu vrijednost zadnjeg čvora
+
+		_tail = NULL;			//vrijednost prvog elementa stavimo u null
+
+		return temp;			//vratimo vrijednost nekadašnjeg elementa
+	}
+
+//	else						//ako nema čvorova neradimo ništa
+}
+
+//metoda inster dodaje čvor newNode iza čvora node
+void List::insert(Node* node, Node* newNode){
+	newNode -> _prev = node;					//kako dodajemo novi čvor poslje čvora node, prethodnik novog čvora je čvor node
+	newNode -> _next = node -> _next;			//sljedeći čvor novog čvora postaje čvor koji je sljedeći čvoru node
+	if(node -> _next == NULL) _tail = newNode;	//u slsučaju da dodajemo novi čvor na kraj liste, novi čvor postaje zadnji 
+	else node -> _next -> _prev = newNode;		//a ako ne dodajemo čvor na kraj liste prethodni čvor sljedećeg čvora poslje node, postaje novi čvor
+	node -> _next = newNode;					//sljedeći čvor čvora node postaje newNode jer ga stavljamo iza
+}
+
+//metoda erase briše čvor node sa liste
+void List::erase(Node* node){
+	if(node -> _prev == NULL)	//ukoliko brišemo čvor ipred kojeg nema ništa, odnosno prvi čvor sa liste
+		_head = node -> _next;	//prvi čvor postaje sljedeči čvor poslje čvora kojeg brišemo
+
+	else	//uspurotnom šljedeći čvor prethodnika node postalje sljedbenik čvora node
+		node -> _prev -> _next = node -> _next;
+	
+	if(node -> _next == NULL)	//ukoliko brišemo čvor iza kojeg nema ništa, odnosno zadnji čvor sa liste
+		_tail = node -> _prev;	//zadnji čvor postaje prethodni čvor prije čvora kojeg brišemo
+
+	else	//usuprotnom prethodni čvor sljedbenika node postaje postaje prethodnik čvora node
+		node -> _next -> _prev = node -> _prev;
+
+	delete node;	//dilitaj node
+}
+
+//metoda clear briše sve čvorove iz liste
+void List::clear(){
+	while( _head ) pop_front(); 	//sve dok postoji čvor na početku liste, skidaj s početka
+}
+
+//metoda sort sortira čvorove po vrijednosti value
+void List::sort(){
+	//možemo sortirati listu ako postoje barem dva čvora u listi
 	if(_head -> _next){
-		node * tmp = _head;
-		_head = _head -> _next;
-		_head -> _prev = NULL;
-		delete tmp;
-	}
-	else if(_head){
-		node * tmp = _head;
-		_head = NULL;
-		delete tmp;
-	}
-}
-
-void list::push_back(node* x){
-	node * newNode = new node();
-	newNode -> value = x -> value;
-	newNode -> _prev = _tail;
-
-	if(_tail != NULL){
-		_tail -> _next = newNode;
-	}
-	else{
-		_head = newNode;
-	}
-	_tail = newNode;
-}
-
-node* list::pop_back(){
-	if(_tail -> _prev){
-		node * tmp = _tail;
-		_tail = _tail -> _prev;
-		_tail -> _next = NULL;
-		delete tmp;
-	}
-	else if(_tail){
-		node * tmp = _tail;
-		_tail = NULL;
-		delete tmp;
-	}
-}
-
-void list::insert(node* prev, node* x){
-	x -> _prev = prev;
-	x -> _next = prev -> _next;
-
-	if(prev -> _next == NULL) _tail = x;
-	else prev -> _next -> _prev = x;
-
-	prev -> _next = x;
-}
-
-void list::erase(node* x){
-	if(x -> _prev == NULL) _head = x -> _next;
-	else x -> _prev -> _next = x -> _next;
-	if(x -> _next == NULL) _tail = x -> _prev;
-	else x -> _next -> _prev = x -> _prev;
-
-	delete x;
-}
-
-void list::clear(){
-	if(_head)
-		while(_head)
-			pop_front();
-}
-
-void list::sort(){
-	node *tmp, *temp = new node();
-	if(_head == NULL || _head -> _next == NULL) return;
-
-	bool swap = 1;
-	while (swap){
-		swap = 0;
-
-		tmp = _head;
-		while (tmp -> _next != NULL){
-			if (tmp -> value > tmp -> _next -> value){
-				swap = 1;
-				temp -> value = tmp -> value;
-				tmp -> value = tmp -> _next -> value;
-				tmp -> _next -> value = temp -> value;
+		bool swap = 1;	//jeli potrebno sortirati, pretpostavimo da je
+		while (swap){	//počnemo sortirati sve dok je potrebno sortirati
+			swap = 0;	//pretpostavimo da više nije potrebno sortirati
+			Node* tmp = _head;	//svorimo čvor tmp s kojim šibamo kroz listu
+			while (tmp -> _next){	//sve dok sljedeči od tmp nije null listaj jer idemo do predzadnjeg
+				//ukoliko vrijednost ovo elementa je veća od vrijednosti sljedećeg
+				if ((tmp -> value) > (tmp -> _next -> value)){
+					swap = 1;	//znači da nismo sortirali do kraja
+					Node* temp = new Node();	//stvorimo novi čvor temp pomoću kojega vršimo zamjenu
+					temp -> value = tmp -> value;	//vrijednost trenutnog čvora stavljamo u temp
+					tmp -> value = tmp -> _next -> value;	//vrijednost sljedećeg čvora stavljamo u vrijednost trenutnog
+					tmp -> _next -> value = temp -> value;	//vrijednost temp čvora stavljamo u vrijednost sljedećeg
+				}
+				tmp = tmp -> _next;	//temp postaje sljedeći
 			}
-			tmp = tmp -> _next;
 		}
 	}
 }
-void list::reverse(){
-	if( _head==NULL || _head -> _next == NULL) return;
-	node *parent = _head;
-	node *me = _head -> _next;
-	node *child = me -> _next;
+
+//moetoda reverse okreće čvorove...
+void List::reverse(){
+	//nemožemo okretati listu koja nema barem dva elementa
+	//neda mi se razmišljati više tu je link...
+	//http://www.codeproject.com/Articles/27742/How-To-Reverse-a-Linked-List-Different-Ways
+	if( _head == NULL || _head -> _next == NULL) return;
+
+	Node *parent = _head;
+	Node *me = _head -> _next;
+	Node *child = me -> _next;
 
 	_head -> _next = NULL;
 	me -> _next = _head;
@@ -214,32 +228,27 @@ void list::reverse(){
 	_head -> _next = parent;
 }
 
-
-int main()
-{
-	list L;
+int main(){
+	List L;
 	for(int i=0;i<10;i++)
 	{
 		int val = rand()%10;
-		node *x = new node(rand()%10,NULL,NULL);
-		node *y = new node(rand()%10,NULL,NULL);
-
+		Node *x = new Node(rand()%10,NULL,NULL);
+		Node *y = new Node(rand()%10,NULL,NULL);
 		L.push_back(x);
 		L.push_front(y);
 	}
-
-	node *cvor = new node(11, NULL, NULL);
-
 	L.print();
-	L.erase(L.front()->next()->next());
+	L.erase(L.head()->next()->next());
 	L.print();
-	L.insert(L.front()->next()->next(), cvor);
-	L.print();
+	L.pop_front();
+	cout << L.head()->key() << endl;
 	L.sort();
 	L.print();
 	L.reverse();
 	L.print();
 	L.clear();
+	L.print();
 
 	return 0;
 }
