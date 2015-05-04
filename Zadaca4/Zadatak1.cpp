@@ -2,7 +2,7 @@
 using namespace std;
 
 class Vektor {
-public:
+protected:
     int *P;
     int len;
     int curr_len;
