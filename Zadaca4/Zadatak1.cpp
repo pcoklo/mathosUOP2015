@@ -19,20 +19,28 @@ public:
     void ispisi();// ispisuje Vektor na ekran (standardni output)
     void sort();// sortira elemente Vektora
 
-    friend ostream& operator<<(ostream& buffer, const Vektor &V);
-    
     void Zbroji(const Vektor& V1, const Vektor& V2); // V1 + V2
     void Mnozi(const Vektor& V); // V1 * V2 skalarno
-    
-    // operatori
+
+    // operatori pridruživanja
     void operator=(const Vektor&);
-    Vektor operator+(const Vektor&) const;
-    Vektor operator-(const Vektor&) const;
-    int operator*(const Vektor&) const;
     void operator+=(const Vektor&);
     void operator-=(const Vektor&);
+
+    //aritmetični operatori
+    Vektor operator-(const Vektor&) const;
+    Vektor operator+(const Vektor&) const;
+    int operator*(const Vektor&) const;
+
+    //logički operator
     bool operator==(const Vektor&) const;
+
+    //operator pristupa
     int& operator[](int) const;
+
+    
+    friend ostream& operator<<(ostream& buffer, const Vektor &V);
+    
     // destruktor
     ~Vektor(){delete [] P;}
 };
@@ -132,6 +140,20 @@ void Vektor::operator=(const Vektor &V){
     }
 }
 
+void Vektor::operator+=(const Vektor&V){
+    if(this -> curr_len == V.curr_len){
+        for (int i=0; i<V.curr_len; i++)
+            this -> P[i] += V.P[i];
+    }
+}
+
+void Vektor::operator-=(const Vektor&V){
+    if(this -> curr_len == V.curr_len){
+        for (int i=0; i<V.curr_len; i++)
+            this -> P[i] -= V.P[i];
+    }
+}
+
 Vektor Vektor::operator+(const Vektor&V) const{
     if(this -> len == V.len){
         Vektor Z(V);
@@ -165,20 +187,6 @@ int Vektor::operator*(const Vektor&V) const{
     }
 }
 
-void Vektor::operator+=(const Vektor&V){
-    if(this -> curr_len == V.curr_len){
-        for (int i=0; i<V.curr_len; i++)
-            this -> P[i] += V.P[i];
-    }
-}
-
-void Vektor::operator-=(const Vektor&V){
-    if(this -> curr_len == V.curr_len){
-        for (int i=0; i<V.curr_len; i++)
-            this -> P[i] -= V.P[i];
-    }
-}
-
 bool Vektor::operator==(const Vektor&V) const{
     if(this -> curr_len == V.curr_len && this -> len == V.len){
         for (int i=0; i<V.curr_len; i++)
@@ -188,15 +196,15 @@ bool Vektor::operator==(const Vektor&V) const{
     return false;
 }
 
+int & Vektor::operator[](int i) const{
+    return this -> P[i];
+}
+
 ostream& operator<<(ostream& buffer, const Vektor &V){
     for(int i = 0; i<V.curr_len; i++)
         buffer << V.P[i] << "\t";
     buffer << endl;
     return buffer;
-}
-
-int & Vektor::operator[](int i) const{
-    return this -> P[i];
 }
 
 int main(){
