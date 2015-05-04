@@ -48,9 +48,8 @@ Vektor::Vektor(const Vektor &V){
 
 		this -> P = new int [this -> len];
 
-		for (int i = 0; i < this -> curr_len; i++){
+		for (int i = 0; i < this -> curr_len; i++)
 			this -> P[i] = V.P[i]; 
-		}
 	}
 }
 
@@ -61,7 +60,15 @@ bool Vektor::append(int x){
 		return true;
 	}
 
-	else return false;
+	return false;
+}
+
+bool Vektor::search(int x){
+	if(curr_len){
+		for(int i=0; i<curr_len; i++)
+			if(P[i] == x) return true;
+		return false;
+	}
 }
 
 void Vektor::ispisi(){
@@ -69,6 +76,23 @@ void Vektor::ispisi(){
 		for (int i=0; i < curr_len; i++)
 			cout << P[i] << "\t";
 		cout << endl;
+	}
+}
+
+void Vektor::sort(){
+	if(curr_len){
+		bool sorted = false;
+		while (!sorted){
+			sorted = true;
+			for(int i=0; i<curr_len-1; i++){
+				if(P[i]>P[i+1]){
+					sorted = false;
+					int tmp = P[i];
+					P[i] = P[i+1];
+					P[i+1] = tmp;
+				}
+			}
+		}
 	}
 }
 
@@ -92,20 +116,81 @@ void Vektor::Zbroji(const Vektor& V1, const Vektor& V2){
 	}
 }
 
-int main(){
-	Vektor V(6), B;
+void Vektor::operator=(const Vektor &V){
+	if(V.curr_len){
+		if (this -> P) delete [] this -> P;
 
-	V.append(0);
-	V.append(6);
-	V.append(5);
+		this -> curr_len = V.curr_len;
+		this -> len = V.len;
 
-	Vektor A(V);
-	A.ispisi();
+		this -> P = new int [this -> len];
 
-	A.Mnozi(V);
+		for (int i=0; i < this -> curr_len; i++)
+			this -> P[i] = V.P[i];
+	}
+}
 
-	B.Zbroji(A,V);
-	B.ispisi();
+Vektor Vektor::operator+(const Vektor&V) const{
+	if(this -> len == V.len){
+		Vektor Z(V);
+
+		for(int i=0; i<Z.curr_len; i++)
+			Z.P[i] += this -> P[i];
+
+		return Z;
+	}
+}
+
+Vektor Vektor::operator-(const Vektor&V) const{
+	if(this -> len == V.len){
+		Vektor Z(V);
+
+		for(int i=0; i<Z.curr_len; i++)
+			Z.P[i] -= this -> P[i];
+
+		return Z;
+	}
+}
+
+int Vektor::operator*(const Vektor&V) const{
+	if (this -> curr_len == V.curr_len){
+		int sum=0;
+
+		for (int i=0; i<V.curr_len; i++)
+			sum += this -> P[i] * V.P[i];
+
+		return sum;		
+	}
+}
+
+void Vektor::operator+=(const Vektor&V){
+	if(this -> curr_len == V.curr_len){
+		for (int i=0; i<V.curr_len; i++)
+			this -> P[i] += V.P[i];
+	}
+}
+
+void Vektor::operator-=(const Vektor&V){
+	if(this -> curr_len == V.curr_len){
+		for (int i=0; i<V.curr_len; i++)
+			this -> P[i] -= V.P[i];
+	}
+}
+
+bool Vektor::operator==(const Vektor&V) const{
+	if(this -> curr_len == V.curr_len && this -> len == V.len){
+		for (int i=0; i<V.curr_len; i++)
+			if(this -> P[i] != V.P[i]) return false;
+		return true;
+	}
+	return false;
+}
+
+int & Vektor::operator[](int i) const{
+	return this -> P[i];
+}
+
+int main(){	
 
 	return 0;
 }
