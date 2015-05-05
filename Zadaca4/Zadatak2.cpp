@@ -1,6 +1,5 @@
 #include <iostream>
 using namespace std;
-
 class Razlomak {
 
 protected:
@@ -8,7 +7,6 @@ protected:
 
 public:
 	Razlomak();
-	Razlomak(int a);
 	Razlomak(int a, int b);
 	Razlomak(const Razlomak &R);
 
@@ -43,16 +41,10 @@ public:
 	void ispisi();// ispisi Razlomak na ekran
 	void ispisi_mjesoviti();// ispisi Razlomak na ekran kao mješoviti broj
 
-	friend ostream& operator<<(ostream& buffer, const Razlomak &R);
 };
 
 Razlomak::Razlomak(){
 	brojnik = 1;
-	nazivnik = 1;
-}
-
-Razlomak::Razlomak(int a){
-	brojnik = a;
 	nazivnik = 1;
 }
 
@@ -69,6 +61,8 @@ void Razlomak::operator = (const Razlomak& R){
 void Razlomak::operator += (const Razlomak& R){
 	if(this -> nazivnik == R.nazivnik)
 		this -> brojnik += R.brojnik;
+	//	this -> brojnik = this -> brojnik + R.brojnik;
+
 	else{
 		this -> brojnik = (this -> brojnik * R.nazivnik) + (this -> nazivnik * R.brojnik);
 		this -> nazivnik *= R.nazivnik;
@@ -94,16 +88,13 @@ void Razlomak::operator /= (const Razlomak& R){
 	this -> nazivnik *= R.brojnik;
 }
 
-ostream& operator<<(ostream& buffer, const Razlomak &R){
-	return buffer << R.brojnik << "/" << R.nazivnik;
-}
-
 Razlomak Razlomak::operator + (const Razlomak& R) const{
 	Razlomak S;
 
 	if(this -> nazivnik == R.nazivnik){
 		S.brojnik = this -> brojnik + R.brojnik;
 		S.nazivnik = R.nazivnik;
+	//	S.nazivnik = this -> nazivnik;
 	}
 
 	else{
@@ -120,6 +111,7 @@ Razlomak Razlomak::operator - (const Razlomak& R) const{
 	if(this -> nazivnik == R.nazivnik){
 		S.brojnik = this -> brojnik - R.brojnik;
 		S.nazivnik = R.nazivnik;
+	//	S.nazivnik = this -> nazivnik;
 	}
 
 	else{
@@ -149,23 +141,23 @@ Razlomak Razlomak::operator / (const Razlomak& R) const{
 }
 
 bool Razlomak::operator == (const Razlomak& R) const{
-	return (this -> brojnik / this -> nazivnik) == (R.brojnik / R.nazivnik);
+	return (float(this -> brojnik) / this -> nazivnik) == (float(R.brojnik) / R.nazivnik);
 }
 
 bool Razlomak::operator <= (const Razlomak& R) const{
-	return (this -> brojnik / this -> nazivnik) <= (R.brojnik / R.nazivnik);
+	return (float(this -> brojnik) / this -> nazivnik) <= (float(R.brojnik) / R.nazivnik);
 }
 
 bool Razlomak::operator >= (const Razlomak& R) const{
-	return (this -> brojnik / this -> nazivnik) >= (R.brojnik / R.nazivnik);
+	return (float(this -> brojnik) / this -> nazivnik) >= (float(R.brojnik) / R.nazivnik);
 }
 
 bool Razlomak::operator < (const Razlomak& R) const{
-	return (this -> brojnik / this -> nazivnik) < (R.brojnik / R.nazivnik);
+	return (float(this -> brojnik) / this -> nazivnik) < (float(R.brojnik) / R.nazivnik);
 }
 
 bool Razlomak::operator > (const Razlomak& R) const{
-	return (this -> brojnik / this -> nazivnik) > (R.brojnik / R.nazivnik);
+	return (float(this -> brojnik) / this -> nazivnik) > (float(R.brojnik) / R.nazivnik);
 }
 
 float Razlomak::decimal() const{
@@ -174,26 +166,66 @@ float Razlomak::decimal() const{
 
 float Razlomak::round() const{
 	int vrati = brojnik / nazivnik;
+//	cout << "Vrati prije provjere " << vrati << endl;
+	//float vrijednost prva decimala
 	float prvaDecimala = float(brojnik) / nazivnik;
+//	cout << "prvaDecimala prvi put " << prvaDecimala << endl;
 	prvaDecimala *= 10;
+//	cout << "prvaDecimala drugi put " << prvaDecimala << endl;
 	prvaDecimala = int(prvaDecimala) % 10;
-	if(int(prvaDecimala) >= 5) vrati++; 
+//	cout << "prvaDecimala treći put " << prvaDecimala << endl;
+	if(int(prvaDecimala) >= 5) vrati++;
+//	cout << "Vrati poslje provjere " << vrati << endl;
 	return vrati;
 }
 
+void Razlomak::ispisi_mjesoviti(){
+	this->skrati();
+	int cijelo = 0;
+	int a = brojnik;
+
+	while (a >= nazivnik){
+		a-=nazivnik;
+		cijelo++;
+	}
+
+	if(a==0) cout << cijelo << endl;
+	else cout << cijelo << " " << a << "/" << nazivnik << endl;
+
+}
+
+bool Razlomak::skrati(){
+	int a = brojnik;
+	int b = nazivnik;
+	int c;
+	
+	while(a != 0){
+		c = a;
+		a = b%a;
+		b = c;
+	}
+
+	if(b == 1) return true;
+
+	brojnik /= b;
+	nazivnik /= b;
+	return false;
+}
+
+void Razlomak::ispisi(){
+	if (nazivnik == 1) cout << brojnik << endl;
+	else
+		cout << brojnik << "/" << nazivnik << endl;
+}
+
 int main(){
+	Razlomak R1(56,24);
 
-	Razlomak A(1,2);
-	Razlomak B(3,4);
+	R1.ispisi_mjesoviti();
 
-	Razlomak C = A/B;
+	cout << R1.decimal() << endl;
+	cout << R1.round() << endl;
 
-	cout << C << endl;
-
-	Razlomak G(14,6);
-
-	cout << G.round() << endl;
-	cout << G.decimal() << endl;
-
+	R1.ispisi();
 	return 0;
 }
