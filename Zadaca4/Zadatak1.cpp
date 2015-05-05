@@ -37,9 +37,6 @@ public:
 
     //operator pristupa
     int& operator[](int) const;
-
-    
-    friend ostream& operator<<(ostream& buffer, const Vektor &V);
     
     // destruktor
     ~Vektor(){delete [] P;}
@@ -106,6 +103,7 @@ void Vektor::sort(){
 }
 
 void Vektor::Mnozi(const Vektor &V){
+    //ako su trenutne duljine vektora jednake
     if (this -> curr_len == V.curr_len){
         int sum=0;
         for (int i=0; i<V.curr_len; i++)
@@ -215,7 +213,7 @@ int main(){
     cout << V1 << V2;
     Vektor C(6);
 
-    C = V1 + V2;
+    C = V1+V2;
 
     cout << C << endl;
 
