@@ -74,11 +74,10 @@ bool Vektor::append(int x){
 }
 
 bool Vektor::search(int x){
-    if(curr_len){
+    if(curr_len)
         for(int i=0; i<curr_len; i++)
             if(P[i] == x) return true;
-        return false;
-    }
+    return false;
 }
 
 void Vektor::ispisi(){
@@ -106,16 +105,17 @@ void Vektor::sort(){
     }
 }
 
-void Vektor::Mnozi(const Vektor& V){
+void Vektor::Mnozi(const Vektor &V){
     if (this -> curr_len == V.curr_len){
         int sum=0;
         for (int i=0; i<V.curr_len; i++)
             sum += this -> P[i] * V.P[i];
         cout << "Skalarni produkt = " << sum << endl;           
     }
+    else cout << "neože se množit" << endl;
 }
 
-void Vektor::Zbroji(const Vektor& V1, const Vektor& V2){
+void Vektor::Zbroji(const Vektor &V1, const Vektor &V2){
     if(V1.curr_len == V2.curr_len){
         this -> len = V1.len;
         this -> curr_len = V1.curr_len;
@@ -140,22 +140,22 @@ void Vektor::operator=(const Vektor &V){
     }
 }
 
-void Vektor::operator+=(const Vektor&V){
+void Vektor::operator+=(const Vektor &V){
     if(this -> curr_len == V.curr_len){
         for (int i=0; i<V.curr_len; i++)
             this -> P[i] += V.P[i];
     }
 }
 
-void Vektor::operator-=(const Vektor&V){
+void Vektor::operator-=(const Vektor &V){
     if(this -> curr_len == V.curr_len){
         for (int i=0; i<V.curr_len; i++)
             this -> P[i] -= V.P[i];
     }
 }
 
-Vektor Vektor::operator+(const Vektor&V) const{
-    if(this -> len == V.len){
+Vektor Vektor::operator+(const Vektor &V) const{
+    if(this -> curr_len == V.curr_len){
         Vektor Z(V);
 
         for(int i=0; i<Z.curr_len; i++)
@@ -165,8 +165,8 @@ Vektor Vektor::operator+(const Vektor&V) const{
     }
 }
 
-Vektor Vektor::operator-(const Vektor&V) const{
-    if(this -> len == V.len){
+Vektor Vektor::operator-(const Vektor &V) const{
+    if(this -> curr_len == V.curr_len){
         Vektor Z(V);
 
         for(int i=0; i<Z.curr_len; i++)
@@ -176,7 +176,7 @@ Vektor Vektor::operator-(const Vektor&V) const{
     }
 }
 
-int Vektor::operator*(const Vektor&V) const{
+int Vektor::operator*(const Vektor &V) const{
     if (this -> curr_len == V.curr_len){
         int sum=0;
 
@@ -187,7 +187,7 @@ int Vektor::operator*(const Vektor&V) const{
     }
 }
 
-bool Vektor::operator==(const Vektor&V) const{
+bool Vektor::operator==(const Vektor &V) const{
     if(this -> curr_len == V.curr_len && this -> len == V.len){
         for (int i=0; i<V.curr_len; i++)
             if(this -> P[i] != V.P[i]) return false;
@@ -208,10 +208,18 @@ ostream& operator<<(ostream& buffer, const Vektor &V){
 }
 
 int main(){
-    Vektor V(6);
-    V.append(7); V.append(6); V.append(11);
+    Vektor V1(6), V2(6);
+    V1.append(7); V1.append(6); V1.append(11);
+    V2.append(16);V2.append(8); V2.append(4);
 
-    cout << V << endl;
+    cout << V1 << V2;
+    Vektor C(6);
+
+    C = V1 + V2;
+
+    cout << C << endl;
+
+    V1.Mnozi(V2);
     
     return 0;
 }
