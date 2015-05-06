@@ -69,45 +69,10 @@ void Razlomak::operator = (const Razlomak& R){
 	this -> nazivnik = R.nazivnik;
 }
 
-//operator += zbraja desnu stranu u lijevu
-void Razlomak::operator += (const Razlomak& R){
-	//ako su nazivnici jednaki, samo zbrojimo brojnike
-	if(this -> nazivnik == R.nazivnik)
-		this -> brojnik += R.brojnik;
-	//	this -> brojnik = this -> brojnik + R.brojnik;
-
-	//ako su nazivnici različiti...
-	else{
-		this -> brojnik = (this -> brojnik * R.nazivnik) + (this -> nazivnik * R.brojnik);
-		this -> nazivnik *= R.nazivnik;
-	}
-}
-
-//isto kao i += samo oduzima
-void Razlomak::operator -= (const Razlomak& R){
-	if(this -> nazivnik == R.nazivnik)
-		this -> brojnik -= R.brojnik;
-	//	this -> brojnik = this -> brojnik + R.brojnik;
-	else{
-		this -> brojnik = (this -> brojnik * R.nazivnik) - (this -> nazivnik * R.brojnik);
-		this -> nazivnik *= R.nazivnik;
-	}
-}
-
-//množi
-void Razlomak::operator *= (const Razlomak& R){
-	this -> brojnik *= R.brojnik;
-	this -> nazivnik *= R.nazivnik;
-//	this -> brojnik = this -> brojnik * R.brojnik;
-//	this -> nazivnik = this -> nazivnik * R.brojnik;
-}
-
-void Razlomak::operator /= (const Razlomak& R){
-	this -> brojnik *= R.nazivnik;
-	this -> nazivnik *= R.brojnik;
-//	this -> brojnik = this -> brojnik * R.nazivnik;
-//	this -> nazivnik = this -> nazivnik * R.brojnik;
-}
+void Razlomak::operator += (const Razlomak& R){ *this = *this + R; }
+void Razlomak::operator -= (const Razlomak& R){ *this = *this - R; }
+void Razlomak::operator *= (const Razlomak& R){ *this = *this * R; }
+void Razlomak::operator /= (const Razlomak& R){ *this = *this / R; }
 
 //isto kao i += samo spremi zbroj u vrati i onda napravi return
 Razlomak Razlomak::operator + (const Razlomak& R) const{
