@@ -181,19 +181,9 @@ void Vektor::operator=(const Vektor &V){
     }
 }
 
-void Vektor::operator+=(const Vektor &V){
-    if(this -> curr_len == V.curr_len){
-        for (int i=0; i<V.curr_len; i++)
-            this -> P[i] += V.P[i];
-    }
-}
-
-void Vektor::operator-=(const Vektor &V){
-    if(this -> curr_len == V.curr_len){
-        for (int i=0; i<V.curr_len; i++)
-            this -> P[i] -= V.P[i];
-    }
-}
+//što se događa??
+void Vektor::operator+=(const Vektor &V){ *this = *this + V; }
+void Vektor::operator-=(const Vektor &V){ *this = *this - V; }
 
 //Z = V1 + V2
 //this = V1; V= V2
@@ -263,6 +253,10 @@ int main(){
     else cout << "V1 != V2" << endl;
 
     Vektor C(6);
+
+    V1+=V2;
+
+    V1.ispisi();
 
     C = V1+V2;
 
