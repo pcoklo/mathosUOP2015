@@ -262,13 +262,28 @@ void Razlomak::ispisi(){
 }
 
 int main(){
-	Razlomak R1(8,3);
+	Razlomak R1(38,4);
 
 	R1.ispisi_mjesoviti();
 
 	cout << R1.decimal() << endl;
 	cout << R1.round() << endl;
 
+	R1.skrati();
 	R1.ispisi();
+
+	Razlomak R2(8,35), R3(195,6);
+	Razlomak R;
+
+	R=R2+R3;  R.ispisi();
+	R=R2-R3;  R.ispisi();
+	R=R2*R3;  R.ispisi();
+	R=R2/R3;  R.ispisi();
+
+	R1+=R2; R1.skrati(); R1.ispisi();
+	R1-=R2; R1.skrati(); R1.ispisi();
+	R1/=R2; R1.skrati(); R1.ispisi();
+	R1*=R2; R1.skrati(); R1.ispisi();
+
 	return 0;
 }
