@@ -289,5 +289,6 @@ int main(){
     H+=V;
     H.ispisi();
 
+    cout << H[16] << endl;
     return 0;
 }
