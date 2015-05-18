@@ -16,7 +16,8 @@ public:
 	float opseg() const;
 	float povrsina() const;
 
-	float radius() const{return r;};
+	friend class Kugla;
+	friend class Stozac;
 };
 
 class Stozac: public Krug{
@@ -62,7 +63,7 @@ Kugla::Kugla(float r){
 }
 
 Kugla::Kugla(Krug& K){
-	this -> r = K.radius();
+	this -> r = K.r;
 }
 
 float Kugla::oplosje() const{
@@ -79,16 +80,16 @@ Stozac::Stozac(float r, float h){
 }
 
 Stozac::Stozac(Krug &K, float h){
-	this -> r = K.radius();
+	this -> r = K.r;
 	this -> h = h;
 }
 
 float Stozac::oplosje() const{
-	return r;
+	return r*PI*(r+sqrt(r*r + h*h));
 }
 
 float Stozac::volumen() const{
-	return 2*r;
+	return r*r*PI*h/3;
 }
 
 int main(){
