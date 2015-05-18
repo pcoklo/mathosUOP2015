@@ -32,17 +32,9 @@ Trokut::Trokut(float a, float b, float c){
 	this-> c = c;
 }
 
-JKTrokut::JKTrokut(float a, float b):Trokut(a,b,c){
-	this-> a = a;
-	this-> b = b;
-	this-> c = b;
-}
+JKTrokut::JKTrokut(float a, float b):Trokut(a,b,b){}
 
-JSTrokut::JSTrokut(float a):JKTrokut(a,b){
-	this-> a = a;
-	this-> b = a;
-	this-> c = a;
-}
+JSTrokut::JSTrokut(float a):JKTrokut(a,a){}
 
 float Trokut::opseg() const{
 	return a+b+c;
