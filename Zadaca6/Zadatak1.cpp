@@ -13,14 +13,13 @@ void print(T *x, int N){
 
 template<class T>
 void sort(T *x, int N){
-    for (int i=0;i<N;i++)
-        for (int j=1;j<N;j++)
-            if (x[j]<x[j-1])
-            {
-                T t = x[j-1];
-                x[j-1] = x[j];
-                x[j] = t;
-            }
+	for (int i=0;i<N;i++)
+		for (int j=1;j<N;j++)
+			if (x[j]<x[j-1]){
+				T t = x[j-1];
+				x[j-1] = x[j];
+				x[j] = t;
+			}
 }
 
 template<class T>
@@ -29,6 +28,7 @@ void wraper(T *x, int N){
 	sort(x, N);
 	print(x, N);
 	cout << endl;
+	delete [] x;
 }
 
 class Pair
@@ -59,7 +59,7 @@ ostream& operator<<(ostream& buffer, const Pair& T){
 int main(){
 	srand(time(0));
 
-	int n = 10;
+	int n = 100;
 	
 	int *intList = new int [n];
 	float *floatList = new float [n];
@@ -75,8 +75,5 @@ int main(){
 	wraper(floatList, n);
 	wraper(pairList, n);
 
-	delete intList;
-	delete floatList;
-	delete pairList;
 	return 0;
 }
