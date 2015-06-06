@@ -23,6 +23,14 @@ void sort(T *x, int N){
             }
 }
 
+template<class T>
+void wraper(T *x, int N){
+	print(x, N);
+	sort(x, N);
+	print(x, N);
+	cout << endl;
+}
+
 class Pair
 {
 	float x, y;
@@ -63,16 +71,8 @@ int main(){
 		pairList[i] = Pair(rand()%100, rand()%100);
 	}
 
-	print(intList, n);
-	sort(intList, n);
-	print(intList, n);
-
-	print(floatList, n);
-	sort(floatList, n);
-	print(floatList, n);
-
-	print(pairList, n);
-	sort(pairList, n);
-	print(pairList, n);
+	wraper(intList, n);
+	wraper(floatList, n);
+	wraper(pairList, n);
 	return 0;
 }
