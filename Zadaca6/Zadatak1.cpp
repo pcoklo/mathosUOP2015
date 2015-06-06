@@ -74,5 +74,9 @@ int main(){
 	wraper(intList, n);
 	wraper(floatList, n);
 	wraper(pairList, n);
+
+	delete intList;
+	delete floatList;
+	delete pairList;
 	return 0;
 }
