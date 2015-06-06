@@ -28,7 +28,7 @@ public:
 			this->c = V.c;
 			this->s = V.s;
 
-			this->vektor = new T[this.c];
+			this->vektor = new T[this->c];
 
 			for(int i=0; i<this->s; i++)
 				this->vektor[i] = V.vektor[i];
@@ -101,7 +101,7 @@ public:
 
 			this->vektor = new T[this->c];
 
-			for(int i=0; i<this.s; i++)
+			for(int i=0; i<this->s; i++)
 				this->vektor[i] = V.vektor[i];
 		}
 	};
@@ -195,20 +195,25 @@ ostream& operator<<(ostream& buffer, const Pair& T){
 int main() {
 	srand(time(0));
 
-	Vektor<double> L1;
+	Vektor<double> L1, L2, L3;
 	int n=10;
 	for(int i=0; i<n; i++){
 		L1.push_back((rand()%100) + (double(rand()%100000)/100000));
+		L2.push_back((rand()%100) + (double(rand()%100000)/100000));
 	}
 
 	cout << L1 << endl;
+	cout << L2 << endl;
+	L3 = L1 + L2;
 
-	Vektor<Pair> L2; // Pair je tip definiran u prvom zadatku
+	cout << L3 << endl;
+
+	Vektor<Pair> L4; // Pair je tip definiran u prvom zadatku
 	for(int i = 0; i<n; i++){
-		L2.push_back(Pair(rand()%100, rand()%100));
+		L4.push_back(Pair(rand()%100, rand()%100));
 	}
 
-	cout << L2 << endl;
+	cout << L4 << endl;
 
 	// ...
 	return 0;
