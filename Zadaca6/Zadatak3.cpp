@@ -205,9 +205,9 @@ int main() {
 	cout << L1 << endl;
 	cout << L2 << endl;
 	L3 = L1 + L2;
-
+	L1+=L2;
 	cout << L3 << endl;
-
+	cout << L1 << endl;
 	Vektor<Pair> L4; // Pair je tip definiran u prvom zadatku
 	for(int i = 0; i<n; i++){
 		L4.push_back(Pair(rand()%100, rand()%100));
