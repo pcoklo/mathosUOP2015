@@ -178,6 +178,9 @@ public:
 	bool operator<(const Pair &) const;
 	bool operator>(const Pair &) const;
 
+	Pair& operator+=(const Pair &);
+	Pair& operator-=(const Pair &);
+
 	friend ostream& operator<<(ostream& buffer, const Pair& T);
 };
 
@@ -185,8 +188,11 @@ Pair::Pair(): x(0), y(0) {};
 Pair::Pair(float x, float y): x(x), y(y) {};
 Pair::Pair(const Pair &T): x(T.x), y(T.y) {};
 
-bool Pair::operator<(const Pair &T) const{ return this->x < T.x; }
-bool Pair::operator>(const Pair &T) const{ return this->x > T.x; }
+bool Pair::operator<(const Pair &P) const{ return this->x < P.x; }
+bool Pair::operator>(const Pair &P) const{ return this->x > P.x; }
+
+Pair& Pair::operator+=(const Pair &P) { this->x += P.x; this->y += P.y; }
+Pair& Pair::operator-=(const Pair &P) { this->x -= P.x; this->y -= P.y; }
 
 ostream& operator<<(ostream& buffer, const Pair& T){
 	return buffer << "(" << T.x << "," << T.y << ")";
@@ -208,13 +214,16 @@ int main() {
 	L1+=L2;
 	cout << L3 << endl;
 	cout << L1 << endl;
-	Vektor<Pair> L4; // Pair je tip definiran u prvom zadatku
+
+	Vektor<Pair> P1, P2, P3; // Pair je tip definiran u prvom zadatku
 	for(int i = 0; i<n; i++){
-		L4.push_back(Pair(rand()%100, rand()%100));
+		P1.push_back(Pair(rand()%100, rand()%100));
+		P2.push_back(Pair(rand()%100, rand()%100));		
 	}
 
-	cout << L4 << endl;
-
+	cout << P1 << endl << P2 << endl;
+	P3 = P1 + P2;
+	cout << P3 << endl;
 	// ...
 	return 0;
 }
