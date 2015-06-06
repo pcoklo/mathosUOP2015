@@ -48,7 +48,7 @@ public:
 
 
 int main(){
-//	srand(time(0));
+	srand(time(0));
 
 	const int n = 5, m = 10;
 
