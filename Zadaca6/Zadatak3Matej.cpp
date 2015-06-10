@@ -286,7 +286,7 @@ vector<T> vector<T>::operator!=(const vector<T>&V)
 	return true;
 }
 
-int cc=1000000;
+int l0=1000000;
 
 class complex
 {
@@ -426,12 +426,12 @@ ostream& operator<<(ostream& buffer, const complex& z)
 }
 int main()
 {
-	cout << "LUDNICA" << endl;
+	cout << "ZBRAJANJE VEKTORA" << endl;
 
 	srand(time(0));
 	vector <complex> vCom1, vCom2, vCom3;
 	vector <int> vInt1, vInt2, vInt3;
-	for(int i=0; i<cc; i++){
+	for(int i=0; i<l0; i++){
 		vCom1.push_back(complex(rand()%10, rand()%10));
 		vCom2.push_back(complex(rand()%10, rand()%10));
 		vInt1.push_back(rand()%100);
